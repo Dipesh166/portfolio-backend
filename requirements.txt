@@ -1,0 +1,31 @@
+# Backend
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-dotenv==1.0.1
+python-multipart==0.0.20
+
+# Database (motor 3.7.0 requires pymongo>=4.9,<5.0)
+motor==3.7.0
+pymongo==4.18.1
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+# keep bcrypt <4.1: passlib 1.7.4 breaks on bcrypt>=4.1 (__about__ removed)
+bcrypt==4.0.1
+
+# Validation
+pydantic[email]==2.10.4
+pydantic-settings==2.7.1
+# required by pydantic EmailStr (pulled in by the email extra, pinned explicitly)
+email-validator==2.2.0
+dnspython==2.7.0
+
+# CORS / ASGI
+starlette==0.41.3
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.25.2
+# required by starlette.testclient.TestClient
+httpx==0.28.1
