@@ -2,6 +2,7 @@
 
 import io
 from datetime import datetime, timezone
+from email.utils import format_datetime
 from typing import Optional
 
 from bson import ObjectId
@@ -58,7 +59,17 @@ async def get_image(db: AsyncIOMotorDatabase, file_id: str) -> Optional[dict]:
         "filename": grid_out.filename,
         "content_type": metadata.get("content_type", "image/jpeg"),
         "size": metadata.get("size", len(file_data)),
+        "upload_date": _http_date(grid_out.upload_date),
     }
+
+
+def _http_date(value: Optional[datetime]) -> str:
+    """Format a datetime as an RFC 7231 IMF-fixdate, or an empty string."""
+    if not isinstance(value, datetime):
+        return ""
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return format_datetime(value, usegmt=True)
 
 
 async def delete_image(db: AsyncIOMotorDatabase, file_id: str) -> bool:
